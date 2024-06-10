@@ -1,14 +1,18 @@
 import { useState } from "react";
 
-function ListGroup() {
-  const items = ["New York", "San Francisco", "Tokyo", "London", "Paris"];
+interface ListGroupProps {
+  items: string[];
+  heading: string;
+  onSelectItem?: (item: string) => void;
+}
+
+function ListGroup(props: ListGroupProps) {
+  const { items, heading, onSelectItem } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const handleClick = (event: MouseEvent) => {
-    console.log(event);
-  };
+
   return (
     <>
-      <h1>ListGroup</h1>
+      <h1>{heading}</h1>
       {items.length === 0 && <p>No items found</p>}
       <ul className="list-group">
         {items.map((item, index) => (
@@ -17,7 +21,10 @@ function ListGroup() {
               selectedIndex === index ? "active" : ""
             }`}
             key={item}
-            onClick={(event) => handleClick}
+            onClick={() => {
+              setSelectedIndex(index);
+              onSelectItem?.(item);
+            }}
           >
             {item}
           </li>
